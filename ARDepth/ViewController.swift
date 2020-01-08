@@ -114,7 +114,7 @@ class ViewController: UIViewController {
         }
         session.run(configuration, options: [.resetTracking, .removeExistingAnchors])
 
-        statusViewController.scheduleMessage("FIND A SURFACE TO PLACE AN OBJECT", inSeconds: 7.5, messageType: .planeEstimation)
+        statusViewController.scheduleMessage("Find a surface to ping", inSeconds: 7.5, messageType: .planeEstimation)
     }
 
     // MARK: - Focus Square
@@ -124,7 +124,7 @@ class ViewController: UIViewController {
             focusSquare.hide()
         } else {
             focusSquare.unhide()
-            statusViewController.scheduleMessage("TRY MOVING LEFT OR RIGHT", inSeconds: 5.0, messageType: .focusSquare)
+            statusViewController.scheduleMessage("Try moving to the left or right", inSeconds: 5.0, messageType: .focusSquare)
         }
         
         // Perform ray casting only when ARKit tracking is in a good state.

@@ -31,9 +31,10 @@ extension ViewController: ARSCNViewDelegate, ARSessionDelegate {
         guard anchor is ARPlaneAnchor else { return }
         DispatchQueue.main.async {
             self.statusViewController.cancelScheduledMessage(for: .planeEstimation)
-            self.statusViewController.showMessage("SURFACE DETECTED")
+            self.statusViewController.showMessage("Surface detected")
+            
             if self.virtualObjectLoader.loadedObjects.isEmpty {
-                self.statusViewController.scheduleMessage("TAP + TO PLACE AN OBJECT", inSeconds: 7.5, messageType: .contentPlacement)
+                self.statusViewController.scheduleMessage("Tap to ping the surface", inSeconds: 7.5, messageType: .contentPlacement)
             }
         }
     }

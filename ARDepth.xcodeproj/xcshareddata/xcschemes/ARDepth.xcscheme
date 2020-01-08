@@ -15,7 +15,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "3929C4871E89EC2C00E00B60"
-               BuildableName = "AR Depth.app"
+               BuildableName = "ARDepth.app"
                BlueprintName = "ARDepth"
                ReferencedContainer = "container:ARDepth.xcodeproj">
             </BuildableReference>
@@ -45,7 +45,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "3929C4871E89EC2C00E00B60"
-            BuildableName = "AR Depth.app"
+            BuildableName = "ARDepth.app"
             BlueprintName = "ARDepth"
             ReferencedContainer = "container:ARDepth.xcodeproj">
          </BuildableReference>
@@ -62,7 +62,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "3929C4871E89EC2C00E00B60"
-            BuildableName = "AR Depth.app"
+            BuildableName = "ARDepth.app"
             BlueprintName = "ARDepth"
             ReferencedContainer = "container:ARDepth.xcodeproj">
          </BuildableReference>

@@ -23,24 +23,24 @@ class FocusSquare: SCNNode {
     // MARK: - Configuration Properties
     
     // Original size of the focus square in meters.
-    static let size: Float = 0.17
+    static let size: Float = 0.2
     
     // Thickness of the focus square lines in meters.
-    static let thickness: Float = 0.018
+    static let thickness: Float = 0.03
     
     // Scale factor for the focus square when it is closed, w.r.t. the original size.
-    static let scaleForClosedSquare: Float = 0.97
+    static let scaleForClosedSquare: Float = 0.5
     
     // Side length of the focus square segments when it is open (w.r.t. to a 1x1 square).
-    static let sideLengthForOpenSegments: CGFloat = 0.2
+    static let sideLengthForOpenSegments: CGFloat = 0.03
     
     // Duration of the open/close animation
-    static let animationDuration = 0.7
+    static let animationDuration = 0.3
     
-    static let primaryColor = #colorLiteral(red: 1, green: 0.8, blue: 0, alpha: 1)
+    static let primaryColor = #colorLiteral(red: 0.4745098054, green: 0.8392156959, blue: 0.9764705896, alpha: 1)
     
     // Color of the focus square fill.
-    static let fillColor = #colorLiteral(red: 1, green: 0.9254901961, blue: 0.4117647059, alpha: 1)
+    static let fillColor = #colorLiteral(red: 0.4745098054, green: 0.8392156959, blue: 0.9764705896, alpha: 1)
     
     // MARK: - Properties
     

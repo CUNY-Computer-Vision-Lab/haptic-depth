@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		104425E023BE51F2001A65D2 /* FocusSquareDepth.swift in Sources */ = {isa = PBXBuildFile; fileRef = 104425DF23BE51F2001A65D2 /* FocusSquareDepth.swift */; };
 		11BD822A1F09D750003F11C8 /* ViewController+ObjectSelection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 147D76491EFC36070000FEBF /* ViewController+ObjectSelection.swift */; };
 		147062641F06FA790003EE03 /* VirtualObjectSelection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 147062631F06FA790003EE03 /* VirtualObjectSelection.swift */; };
 		1488323F1EFC378A0043E0AB /* ViewController+Actions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1488323E1EFC378A0043E0AB /* ViewController+Actions.swift */; };
@@ -31,7 +30,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		104425DF23BE51F2001A65D2 /* FocusSquareDepth.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusSquareDepth.swift; sourceTree = "<group>"; };
 		11063F3B1EBE651B0033EE6D /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		147062631F06FA790003EE03 /* VirtualObjectSelection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VirtualObjectSelection.swift; sourceTree = "<group>"; };
 		147D76491EFC36070000FEBF /* ViewController+ObjectSelection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ViewController+ObjectSelection.swift"; sourceTree = "<group>"; };
@@ -75,7 +73,6 @@
 			children = (
 				C42A71BC1E9C0AF200944367 /* FocusSquare.swift */,
 				148832401EFC3B250043E0AB /* FocusSquareSegment.swift */,
-				104425DF23BE51F2001A65D2 /* FocusSquareDepth.swift */,
 			);
 			path = "Focus Square";
 			sourceTree = "<group>";
@@ -260,7 +257,6 @@
 				C8C12A711F29277B00B011FE /* ViewController+ARSCNViewDelegate.swift in Sources */,
 				C8C2AC521F3A545C00E86BA3 /* VirtualObjectInteraction.swift in Sources */,
 				C46356671EF9CC500080C8D9 /* VirtualObjectARView.swift in Sources */,
-				104425E023BE51F2001A65D2 /* FocusSquareDepth.swift in Sources */,
 				148832411EFC3B250043E0AB /* FocusSquareSegment.swift in Sources */,
 				C8D71A001F3B7D3D0086AD64 /* VirtualObject.swift in Sources */,
 				C42A71BD1E9C0AF200944367 /* FocusSquare.swift in Sources */,

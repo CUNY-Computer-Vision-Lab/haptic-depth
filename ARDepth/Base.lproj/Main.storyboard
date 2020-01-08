@@ -1,10 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14750" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BV1-FR-VrT">
-    <device id="retina4_7" orientation="portrait">
-        <adaptation id="fullscreen"/>
-    </device>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15702" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BV1-FR-VrT">
+    <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14710.3"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15704"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -101,10 +99,10 @@
             </objects>
             <point key="canvasLocation" x="53.600000000000001" y="-280.20989505247377"/>
         </scene>
-        <!--View Controller-->
+        <!--Main View Controller-->
         <scene sceneID="tXr-a1-R10">
             <objects>
-                <viewController id="BV1-FR-VrT" customClass="ViewController" customModule="ARKitInteraction" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController title="Main View Controller" id="BV1-FR-VrT" customClass="ViewController" customModule="ARKitInteraction" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="RLh-bf-1c3">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -201,28 +199,36 @@
                                     <rect key="frame" x="0.0" y="0.0" width="250" height="45"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <visualEffectView opaque="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="TgK-9d-0nW">
+                                        <visualEffectView opaque="NO" contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="TgK-9d-0nW">
                                             <rect key="frame" x="0.0" y="0.0" width="250" height="44"/>
-                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="Xec-hh-4vF">
                                                 <rect key="frame" x="0.0" y="0.0" width="250" height="44"/>
                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                 <subviews>
-                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dAR-uJ-nmY">
-                                                        <rect key="frame" x="53" y="10" width="200" height="30"/>
-                                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="K1e-G9-g3C">
+                                                        <rect key="frame" x="15" y="10" width="30" height="30.5"/>
+                                                        <color key="tintColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="width" constant="30" id="ZBw-Lb-HXq"/>
+                                                        </constraints>
+                                                    </imageView>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dAR-uJ-nmY">
+                                                        <rect key="frame" x="53" y="12" width="197" height="21"/>
                                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                         <color key="tintColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                         <nil key="textColor"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
-                                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="K1e-G9-g3C">
-                                                        <rect key="frame" x="15" y="10" width="30" height="30"/>
-                                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                        <color key="tintColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                    </imageView>
                                                 </subviews>
+                                                <constraints>
+                                                    <constraint firstItem="dAR-uJ-nmY" firstAttribute="centerY" secondItem="Xec-hh-4vF" secondAttribute="centerY" id="3bZ-DD-8pE"/>
+                                                    <constraint firstAttribute="trailing" secondItem="dAR-uJ-nmY" secondAttribute="trailing" id="5Eu-SM-oeJ"/>
+                                                    <constraint firstItem="dAR-uJ-nmY" firstAttribute="leading" secondItem="K1e-G9-g3C" secondAttribute="trailing" constant="8" symbolic="YES" id="gAa-um-Qe9"/>
+                                                    <constraint firstAttribute="bottom" secondItem="K1e-G9-g3C" secondAttribute="bottom" constant="3.5" id="gw1-Pz-xiz"/>
+                                                    <constraint firstItem="K1e-G9-g3C" firstAttribute="leading" secondItem="Xec-hh-4vF" secondAttribute="leading" constant="15" id="qZn-oS-vce"/>
+                                                    <constraint firstItem="K1e-G9-g3C" firstAttribute="top" secondItem="Xec-hh-4vF" secondAttribute="top" constant="10" id="vUk-2o-1aN"/>
+                                                </constraints>
                                             </view>
                                             <vibrancyEffect>
                                                 <blurEffect style="extraLight"/>
@@ -230,6 +236,12 @@
                                         </visualEffectView>
                                     </subviews>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                    <constraints>
+                                        <constraint firstAttribute="trailing" secondItem="TgK-9d-0nW" secondAttribute="trailing" id="7cq-hM-QVl"/>
+                                        <constraint firstItem="TgK-9d-0nW" firstAttribute="centerY" secondItem="k0i-d1-4Iu" secondAttribute="centerY" id="9WJ-qA-iv3"/>
+                                        <constraint firstItem="TgK-9d-0nW" firstAttribute="top" secondItem="k0i-d1-4Iu" secondAttribute="top" id="EI7-No-Ai8"/>
+                                        <constraint firstItem="TgK-9d-0nW" firstAttribute="leading" secondItem="k0i-d1-4Iu" secondAttribute="leading" id="qZ2-PM-qbH"/>
+                                    </constraints>
                                 </tableViewCellContentView>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <connections>
@@ -249,12 +261,12 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="a7J-OO-ac9" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="771" y="98"/>
+            <point key="canvasLocation" x="769.60000000000002" y="97.151424287856074"/>
         </scene>
     </scenes>
     <resources>
         <image name="add" width="48" height="48"/>
-        <image name="restart" width="20" height="23"/>
-        <image name="restartPressed" width="20" height="23"/>
+        <image name="restart" width="20" height="20"/>
+        <image name="restartPressed" width="20" height="20"/>
     </resources>
 </document>

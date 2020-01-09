@@ -23,6 +23,14 @@ extension ViewController: UIGestureRecognizerDelegate {
         
         statusViewController.cancelScheduledMessage(for: .contentPlacement)
         performSegue(withIdentifier: SegueIdentifier.showObjects.rawValue, sender: addObjectButton)
+    
+    @IBAction func beginContinuousDepthReporting(_ gestureRecognizer: UILongPressGestureRecognizer) {
+        if gestureRecognizer.state == .began {
+            self.becomeFirstResponder()
+            self.continuousReportingActive = true
+        } else if gestureRecognizer.state == .ended {
+            self.continuousReportingActive = false
+        }
     }
     
     /// Determines if the tap gesture for presenting the `VirtualObjectSelectionViewController` should be used.

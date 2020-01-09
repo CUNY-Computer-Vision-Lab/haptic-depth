@@ -37,6 +37,23 @@ extension ViewController: ARSCNViewDelegate, ARSessionDelegate {
                 self.statusViewController.scheduleMessage("Tap to ping the surface", inSeconds: 7.5, messageType: .contentPlacement)
             }
         }
+        
+        // Add mesh visualization
+//        guard let planeAnchor = anchor as? ARPlaneAnchor else { return }
+//        let planeGeometry = ARSCNPlaneGeometry(device: MTLCreateSystemDefaultDevice()!)!
+//        planeGeometry.update(from: planeAnchor.geometry)
+//
+//        // Add material to geometry
+//        let material = SCNMaterial()
+//        material.diffuse.contents = UIColor.blue.withAlphaComponent(0.7)
+//        material.lightingModel = .physicallyBased
+//        planeGeometry.materials = [material]
+//
+//        // Create a SCNNode from geometry
+//        let planeNode = SCNNode(geometry: planeGeometry)
+//
+//        // Add the newly created plane node as a child of the node created for the ARAnchor
+//        node.addChildNode(planeNode)
     }
     
     func renderer(_ renderer: SCNSceneRenderer, didUpdate node: SCNNode, for anchor: ARAnchor) {
@@ -46,6 +63,15 @@ extension ViewController: ARSCNViewDelegate, ARSessionDelegate {
                 objectAtAnchor.anchor = anchor
             }
         }
+        
+        //        // Cast ARAnchor as ARPlaneAnchor, get the child node of the anchor, and cast that node's geometry as an ARSCNPlaneGeometry
+//        guard
+//        let planeAnchor = anchor as? ARPlaneAnchor,
+//        let planeNode = node.childNodes.first,
+//        let planeGeometry = planeNode.geometry as? ARSCNPlaneGeometry
+//        else { return }
+//
+//        planeGeometry.update(from: planeAnchor.geometry)
     }
     
     /// - Tag: ShowVirtualContent

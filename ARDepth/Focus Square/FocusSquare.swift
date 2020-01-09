@@ -20,6 +20,9 @@ class FocusSquare: SCNNode {
         case detecting(raycastResult: ARRaycastResult, camera: ARCamera?)
     }
     
+    public var distanceFromCamera: Float
+    public var lastDistanceFromCamera: Float
+    
     // MARK: - Configuration Properties
     
     // Original size of the focus square in meters.
@@ -93,6 +96,12 @@ class FocusSquare: SCNNode {
     
     /// The primary node that controls the position of other `FocusSquare` nodes.
     private let positioningNode = SCNNode()
+
+    /// Label node which determines position of visual distance indicator
+    private let label = SCNNode()
+    
+    /// Text object which reports distance value, if available
+    private let text = SCNText(string: "Initializing...", extrusionDepth: 0)
     
     /// A counter for managing orientation updates of the focus square.
     private var counterToNextOrientationUpdate: Int = 0
@@ -100,6 +109,9 @@ class FocusSquare: SCNNode {
     // MARK: - Initialization
     
     override init() {
+        lastDistanceFromCamera = 0
+        distanceFromCamera = 0
+        
         super.init()
         opacity = 0.0
         
@@ -145,6 +157,24 @@ class FocusSquare: SCNNode {
         // Always render focus square on top of other content.
         displayNodeHierarchyOnTop(true)
         
+        let x = (s1.position.x + s8.position.x) / 2
+        let y = (s1.position.y + s8.position.y) / 2
+        let z = (s1.position.z + s8.position.z) / 2
+        
+        label.geometry = text
+        label.simdPivot.columns.3.x = Float((text.boundingBox.min.x +
+                                             text.boundingBox.max.x) / 2)
+        label.simdPivot.columns.3.y = Float((text.boundingBox.min.y +
+                                             text.boundingBox.max.y) / 2)
+        label.scale = SCNVector3(0.015, 0.015, 0.015)
+        label.position = SCNVector3(x, y, z)
+        label.geometry?.firstMaterial?.diffuse.contents = #colorLiteral(red: 0.9764705896, green: 0.850980401, blue: 0.5490196347, alpha: 1)
+        
+        positioningNode.addChildNode(label)
+
+        let constraint = SCNBillboardConstraint()
+        label.constraints = [constraint]
+        
         addChildNode(positioningNode)
         
         // Start the focus square as a billboard.
@@ -180,12 +210,14 @@ class FocusSquare: SCNNode {
         simdPosition = [0, 0, -1]
         unhide()
         performOpenAnimation()
+        text.string = ""
     }
 
     /// Called when a surface has been detected.
     private func displayAsOpen(for raycastResult: ARRaycastResult, camera: ARCamera?) {
         performOpenAnimation()
         setPosition(with: raycastResult, camera)
+        text.string = ""
     }
         
     /// Called when a plane has been detected.
@@ -225,6 +257,13 @@ class FocusSquare: SCNNode {
         let tilt = abs(camera.eulerAngles.x)
         let threshold: Float = .pi / 2 * 0.75
         
+        
+        text.string = ((distanceFromCamera * 1000).rounded() / 10).description + " cm"
+        label.simdPivot.columns.3.x = Float((text.boundingBox.min.x +
+                                             text.boundingBox.max.x) / 2)
+        label.simdPivot.columns.3.y = Float((text.boundingBox.min.y +
+                                             text.boundingBox.max.y) / 2)
+        
         if tilt > threshold {
             if !isChangingOrientation {
                 let yaw = atan2f(camera.transform.columns.0.x, camera.transform.columns.1.x)
@@ -263,14 +302,21 @@ class FocusSquare: SCNNode {
      for a distance 1.5 m distance (estimated distance when looking at the floor).
      */
     private func scaleBasedOnDistance(camera: ARCamera?) -> Float {
-        guard let camera = camera else { return 1.0 }
 
-        let distanceFromCamera = simd_length(simdWorldPosition - camera.transform.translation)
+        updateDistanceFromCamera(camera: camera)
+        
         if distanceFromCamera < 0.7 {
             return distanceFromCamera / 0.7
         } else {
             return 0.25 * distanceFromCamera + 0.825
         }
+    }
+    
+    private func updateDistanceFromCamera(camera: ARCamera?) {
+        guard let camera = camera else { return }
+        
+        lastDistanceFromCamera = distanceFromCamera;
+        distanceFromCamera = simd_length(simdWorldPosition - camera.transform.translation)
     }
     
     // MARK: Animations

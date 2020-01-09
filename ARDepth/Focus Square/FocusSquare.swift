@@ -162,7 +162,7 @@ class FocusSquare: SCNNode {
         guard action(forKey: "hide") == nil else { return }
         
         displayNodeHierarchyOnTop(false)
-        runAction(.fadeOut(duration: 0.5), forKey: "hide")
+        runAction(.fadeOut(duration: 0.3), forKey: "hide")
     }
     
     /// Unhides the focus square.
@@ -170,14 +170,14 @@ class FocusSquare: SCNNode {
         guard action(forKey: "unhide") == nil else { return }
         
         displayNodeHierarchyOnTop(true)
-        runAction(.fadeIn(duration: 0.5), forKey: "unhide")
+        runAction(.fadeIn(duration: 0.3), forKey: "unhide")
     }
     
     /// Displays the focus square parallel to the camera plane.
     private func displayAsBillboard() {
         simdTransform = matrix_identity_float4x4
         eulerAngles.x = .pi / 2
-        simdPosition = [0, 0, -0.8]
+        simdPosition = [0, 0, -1]
         unhide()
         performOpenAnimation()
     }
@@ -246,7 +246,7 @@ class FocusSquare: SCNNode {
                 isPointingDownwards = false
                 
                 SCNTransaction.begin()
-                SCNTransaction.animationDuration = 0.5
+                SCNTransaction.animationDuration = 0.3
                 updateOrientation(basedOn: raycastResult)
                 SCNTransaction.commit()
             }
@@ -424,7 +424,7 @@ private func flashAnimation(duration: TimeInterval) -> SCNAction {
         let elapsedTimePercentage = elapsedTime / CGFloat(duration)
         let saturation = 2.8 * (elapsedTimePercentage - 0.5) * (elapsedTimePercentage - 0.5) + 0.3
         if let material = node.geometry?.firstMaterial {
-            material.diffuse.contents = UIColor(hue: 0.1333, saturation: saturation, brightness: 1.0, alpha: 1.0)
+            material.diffuse.contents = UIColor(hue: 0.5, saturation: saturation, brightness: 1.0, alpha: 1.0)
         }
     }
     return action

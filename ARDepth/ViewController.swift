@@ -48,6 +48,9 @@ class ViewController: UIViewController {
     /// Marks if the AR experience is available for restart.
     var isRestartAvailable = true
     
+    /// Marks if the depth reporting is available
+    var isDepthReportAvailable = true
+    
     /// A serial queue used to coordinate adding or removing nodes from the scene.
     let updateQueue = DispatchQueue(label: "com.example.apple-samplecode.arkitexample.serialSceneKitQueue")
     
@@ -55,6 +58,9 @@ class ViewController: UIViewController {
     var session: ARSession {
         return sceneView.session
     }
+    
+    /// Continuous reporting mode
+    var continuousReportingActive = false
     
     // MARK: - View Controller Life Cycle
     
@@ -79,6 +85,10 @@ class ViewController: UIViewController {
         // Set the delegate to ensure this gesture is only used when there are no virtual objects in the scene.
         tapGesture.delegate = self
         sceneView.addGestureRecognizer(tapGesture)
+        
+        let holdGesture = UILongPressGestureRecognizer(target: self, action: #selector(beginContinuousDepthReporting))
+        holdGesture.delegate = self
+        sceneView.addGestureRecognizer(holdGesture)
     }
 
     override func viewDidAppear(_ animated: Bool) {

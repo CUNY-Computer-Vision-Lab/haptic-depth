@@ -7,6 +7,16 @@ SceneKit node giving the user hints about the status of ARKit world tracking.
 
 import Foundation
 import ARKit
+import AVFoundation
+
+// Big bump: 9 centimeters
+let heavyThreshold = 0.09
+
+// Medium bump: 6 centimeters
+let mediumThreshold = 0.06
+
+// Small bump: 3 centimeters
+let lightThreshold = 0.03
 
 /**
  An `SCNNode` which is used to provide uses with visual cues about the status of ARKit world tracking.
@@ -17,7 +27,7 @@ class FocusSquare: SCNNode {
     
     enum State: Equatable {
         case initializing
-        case detecting(raycastResult: ARRaycastResult, camera: ARCamera?)
+        case detecting(raycastResult: ARRaycastResult, haptics: Bool, camera: ARCamera?)
     }
     
     public var distanceFromCamera: Float
@@ -51,7 +61,7 @@ class FocusSquare: SCNNode {
     var lastPosition: SIMD3<Float>? {
         switch state {
         case .initializing: return nil
-        case .detecting(let raycastResult, _): return raycastResult.worldTransform.translation
+        case .detecting(let raycastResult, _, _): return raycastResult.worldTransform.translation
         }
     }
     
@@ -63,11 +73,11 @@ class FocusSquare: SCNNode {
             case .initializing:
                 displayAsBillboard()
                 
-            case let .detecting(raycastResult, camera):
+            case let .detecting(raycastResult, haptics, camera):
                 if let planeAnchor = raycastResult.anchor as? ARPlaneAnchor {
-                    displayAsClosed(for: raycastResult, planeAnchor: planeAnchor, camera: camera)
+                    displayAsClosed(for: raycastResult, planeAnchor: planeAnchor, haptics: haptics, camera: camera)
                 } else {
-                    displayAsOpen(for: raycastResult, camera: camera)
+                    displayAsOpen(for: raycastResult, haptics: haptics, camera: camera)
                 }
             }
         }
@@ -214,24 +224,24 @@ class FocusSquare: SCNNode {
     }
 
     /// Called when a surface has been detected.
-    private func displayAsOpen(for raycastResult: ARRaycastResult, camera: ARCamera?) {
+    private func displayAsOpen(for raycastResult: ARRaycastResult, haptics: Bool, camera: ARCamera?) {
         performOpenAnimation()
-        setPosition(with: raycastResult, camera)
+        setPosition(with: raycastResult, haptics, camera)
         text.string = ""
     }
         
     /// Called when a plane has been detected.
-    private func displayAsClosed(for raycastResult: ARRaycastResult, planeAnchor: ARPlaneAnchor, camera: ARCamera?) {
+    private func displayAsClosed(for raycastResult: ARRaycastResult, planeAnchor: ARPlaneAnchor, haptics: Bool, camera: ARCamera?) {
         performCloseAnimation(flash: !anchorsOfVisitedPlanes.contains(planeAnchor))
         anchorsOfVisitedPlanes.insert(planeAnchor)
-        setPosition(with: raycastResult, camera)
+        setPosition(with: raycastResult, haptics, camera)
     }
     
     // - Tag: Set3DPosition
-    func setPosition(with raycastResult: ARRaycastResult, _ camera: ARCamera?) {
+    func setPosition(with raycastResult: ARRaycastResult, _ haptics: Bool, _ camera: ARCamera?) {
         let position = raycastResult.worldTransform.translation
         recentFocusSquarePositions.append(position)
-        updateTransform(for: raycastResult, camera: camera)
+        updateTransform(for: raycastResult, haptics: haptics, camera: camera)
     }
 
     // MARK: Helper Methods
@@ -242,7 +252,7 @@ class FocusSquare: SCNNode {
     }
     
     /// Update the transform of the focus square to be aligned with the camera.
-    private func updateTransform(for raycastResult: ARRaycastResult, camera: ARCamera?) {
+    private func updateTransform(for raycastResult: ARRaycastResult, haptics: Bool, camera: ARCamera?) {
         // Average using several most recent positions.
         recentFocusSquarePositions = Array(recentFocusSquarePositions.suffix(10))
         
@@ -257,6 +267,28 @@ class FocusSquare: SCNNode {
         let tilt = abs(camera.eulerAngles.x)
         let threshold: Float = .pi / 2 * 0.75
         
+        if (haptics) {
+            let delta = Double(abs(distanceFromCamera - lastDistanceFromCamera))
+            if (delta > lightThreshold) {
+                var style = UIImpactFeedbackGenerator.FeedbackStyle.light
+                var soundId = 1104 as SystemSoundID;
+                
+                if delta >= heavyThreshold || tilt > threshold {
+                    style = .heavy
+                    soundId = 1306
+                } else if (delta >= mediumThreshold) {
+                    style = .medium
+                    soundId = 1105
+                }
+                
+                let impact = UIImpactFeedbackGenerator(style: style)
+                
+                impact.prepare()
+                impact.impactOccurred()
+                
+                AudioServicesPlaySystemSound(soundId)
+            }
+        }
         
         text.string = ((distanceFromCamera * 1000).rounded() / 10).description + " cm"
         label.simdPivot.columns.3.x = Float((text.boundingBox.min.x +

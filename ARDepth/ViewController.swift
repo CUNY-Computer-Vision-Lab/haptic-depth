@@ -62,6 +62,10 @@ class ViewController: UIViewController {
     /// Continuous reporting mode
     var continuousReportingActive = false
     
+    /// Sonar haptic generators
+    let sonarHapticOut = UIImpactFeedbackGenerator(style: .medium)
+    let sonarHapticIn = UIImpactFeedbackGenerator(style: .light)
+    
     // MARK: - View Controller Life Cycle
     
     override func viewDidLoad() {
@@ -144,7 +148,7 @@ class ViewController: UIViewController {
             
             updateQueue.async {
                 self.sceneView.scene.rootNode.addChildNode(self.focusSquare)
-                self.focusSquare.state = .detecting(raycastResult: result, camera: camera)
+                self.focusSquare.state = .detecting(raycastResult: result, haptics: self.continuousReportingActive, camera: camera)
             }
             if !coachingOverlay.isActive {
 //                addObjectButton.isHidden = false

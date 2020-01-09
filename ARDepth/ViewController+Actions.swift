@@ -7,6 +7,11 @@ UI Actions for the main view controller.
 
 import UIKit
 import SceneKit
+import AVFoundation
+
+// Sonar pings
+let sonarOut: SystemSoundID = 1057
+let sonarIn: SystemSoundID = 1103
 
 extension ViewController: UIGestureRecognizerDelegate {
     
@@ -19,10 +24,13 @@ extension ViewController: UIGestureRecognizerDelegate {
     /// Displays the `VirtualObjectSelectionViewController` from the `addObjectButton` or in response to a tap gesture in the `sceneView`.
     @IBAction func showVirtualObjectSelectionViewController() {
         // Ensure adding objects is an available action and we are not loading another object (to avoid concurrent modifications of the scene).
-        guard !addObjectButton.isHidden && !virtualObjectLoader.isLoading else { return }
+//        guard !addObjectButton.isHidden && !virtualObjectLoader.isLoading else { return }
         
         statusViewController.cancelScheduledMessage(for: .contentPlacement)
-        performSegue(withIdentifier: SegueIdentifier.showObjects.rawValue, sender: addObjectButton)
+        // performSegue(withIdentifier: SegueIdentifier.reportDepth.rawValue, sender: addObjectButton)
+        
+        reportDepth()
+    }
     
     @IBAction func beginContinuousDepthReporting(_ gestureRecognizer: UILongPressGestureRecognizer) {
         if gestureRecognizer.state == .began {
@@ -61,6 +69,37 @@ extension ViewController: UIGestureRecognizerDelegate {
             self.upperControlsView.isHidden = false
         }
     }
+    
+    func reportDepth() {
+        guard isDepthReportAvailable, !virtualObjectLoader.isLoading else { return }
+        
+        // Disable new depth report until last is completed to prevent button mashing behavior
+        isDepthReportAvailable = false
+
+        statusViewController.cancelAllScheduledMessages()
+        
+        // Report outbound ping audio/haptic
+        self.sonarHapticOut.impactOccurred()
+        AudioServicesPlaySystemSound (sonarOut)
+        
+        // Prepare for sonar in
+        self.sonarHapticIn.prepare()
+        
+        // Delay depth by distance for sonar effect
+        DispatchQueue.main.asyncAfter(deadline: .now() + Double(self.focusSquare.distanceFromCamera) / 4) {
+            
+            // Report ping audio/haptic
+            self.sonarHapticIn.impactOccurred()
+            AudioServicesPlaySystemSound (sonarIn)
+            
+            // Prepare for next sonar out
+            self.sonarHapticOut.prepare()
+            
+            // Re-enable depth report
+            self.isDepthReportAvailable = true
+            self.upperControlsView.isHidden = false
+        }
+    }
 }
 
 extension ViewController: UIPopoverPresentationControllerDelegate {
@@ -80,19 +119,22 @@ extension ViewController: UIPopoverPresentationControllerDelegate {
         }
         
         guard let identifier = segue.identifier,
-              let segueIdentifer = SegueIdentifier(rawValue: identifier),
-              segueIdentifer == .showObjects else { return }
+            let segueIdentifer = SegueIdentifier(rawValue: identifier) else { return }
         
-        let objectsViewController = segue.destination as! VirtualObjectSelectionViewController
-        objectsViewController.virtualObjects = VirtualObject.availableObjects
-        objectsViewController.delegate = self
-        objectsViewController.sceneView = sceneView
-        self.objectsViewController = objectsViewController
-        
-        // Set all rows of currently placed objects to selected.
-        for object in virtualObjectLoader.loadedObjects {
-            guard let index = VirtualObject.availableObjects.firstIndex(of: object) else { continue }
-            objectsViewController.selectedVirtualObjectRows.insert(index)
+        switch segueIdentifer {
+        case .showObjects:
+            let objectsViewController = segue.destination as! VirtualObjectSelectionViewController
+                     
+            objectsViewController.virtualObjects = VirtualObject.availableObjects
+            objectsViewController.delegate = self
+            objectsViewController.sceneView = sceneView
+            self.objectsViewController = objectsViewController
+
+            // Set all rows of currently placed objects to selected.
+            for object in virtualObjectLoader.loadedObjects {
+                guard let index = VirtualObject.availableObjects.firstIndex(of: object) else { continue }
+                objectsViewController.selectedVirtualObjectRows.insert(index)
+            }
         }
     }
     
